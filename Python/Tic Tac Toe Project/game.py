@@ -55,7 +55,6 @@ def playerMove(player):
     return [row,int(position)]
 
 def boardSelection(row, selection, player):
-    print(row)
     while row[selection].upper() == 'X' or row[selection].upper() == 'O':
         print("This position has been taken")
         return False
@@ -89,50 +88,63 @@ def playTTT():
 
 
            if rowNumber == '0':
-               row0 = boardSelection(row0, positionNumber, player1)
-               if row0 == False:
-                   player1Turn == True
-               else:
-                   player1Turn == False
+             select = boardSelection(row0, positionNumber, player1)
+
+             if select is not False:
+                row0 = select
+                player1Turn = False
+             else:
+                player1Turn = True
 
            elif rowNumber == '1':
-               row1 = boardSelection(row1, positionNumber, player1)
-               if row1 == False:
-                   player1Turn == True
-               else:
-                   player1Turn == False
+                select = boardSelection(row1, positionNumber, player1)
+
+                if select is not False:
+                    row1 = select
+                    player1Turn = False
+                else:
+                    player1Turn = True
                    
            elif rowNumber == '2':
-               row2 = boardSelection(row2, positionNumber, player1)
-               if row2 == False:
-                   player1Turn == True
-               else:
-                   player1Turn == False    
+                select = boardSelection(row2, positionNumber, player1)
+
+                if select is not False:
+                    row1 = select
+                    player1Turn = False
+                else:
+                    player1Turn = True
+        
         else: 
             playerChoices = playerMove(player2)
             rowNumber = playerChoices[0]
             positionNumber = playerChoices[1]
 
-        if rowNumber == '0':
-               row0 = boardSelection(row0, positionNumber, player2)
-               if row0 == False:
-                   player1Turn == True
-               else:
-                   player1Turn == False
+            if rowNumber == '0':
+             select = boardSelection(row0, positionNumber, player2)
 
-        elif rowNumber == '1':
-               row1 = boardSelection(row1, positionNumber, player2)
-               if row1 == False:
-                   player1Turn == True
-               else:
-                   player1Turn == False
+             if select is not False:
+                row0 = select
+                player1Turn = True
+             else:
+                player1Turn = False
+
+            elif rowNumber == '1':
+             select = boardSelection(row1, positionNumber, player2)
+
+             if select is not False:
+                row1 = select
+                player1Turn = True
+             else:
+                player1Turn = False
                    
-        elif rowNumber == '2':
-               row2 = boardSelection(row2, positionNumber, player2)
-               if row2 == False:
-                   player1Turn == True
-               else:
-                   player1Turn == False
+            elif rowNumber == '2':
+             select = boardSelection(row2, positionNumber, player2)
+
+             if select is not False:
+                row2 = select
+                player1Turn = True
+             else:
+                player1Turn = False
 
             
 
