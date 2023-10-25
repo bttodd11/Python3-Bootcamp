@@ -5,41 +5,35 @@
 #1. Show blank board- DONE
 #2. Ask Player one to select the positions - DONE
 #3. Make a selection for Row and Positions - DONE
-#4. From that selection mark an x or o on the board and return the board
+#4. From that selection mark an x or o on the board and return the board - DONE
 #5. Repeat step 3 and 4 until there is a win
 #6 Check to see if there is a winner after step 4
 
-
-row1 = ["","","x"]
-row2 = ["","",""]
-row3 = ["","",""]
-
-
-def createBoard(row1,row2,row3):
+def createBoard(row0,row1,row2):
+    print(row0)
     print(row1)
     print(row2)
-    print(row3)
 
 
 def playerSelection():
     player1Selection = "game"
 
-    while player1Selection.lower() not in ["x", "o"]:
+    while player1Selection.upper() not in ["X", "O"]:
 
-        player1Selection = input("Player 1 do you want to be X or O's ?")
+        player1Selection = input("Player 1 do you want to be X or O's ?").upper()
 
-        if player1Selection.lower() not in ["x", "o"]:
+        if player1Selection.upper() not in ["X", "O"]:
             print("This is not a valid selection")
         else:
             pass
 
 
-    if player1Selection.lower() == "x":
+    if player1Selection.upper() == "X":
         print("Player 1 you are X's and Players 2 you are O's")
-        return ["x", "o"]        
+        return ["X", "O"]        
     else:
         print("Player 1 you are O's and Players 2 you are X's")
-        return ["o", "x"]
+        return ["O", "X"]
 
 
 def playerMove(player):
@@ -58,25 +52,92 @@ def playerMove(player):
         if position.isnumeric() != True or int(position) not in [0,1,2]:
             print("This is not a valid selection")
 
-    return [row,position]
+    return [row,int(position)]
 
 def boardSelection(row, selection, player):
-
-    while row[selection] :
+    print(row)
+    while row[selection].upper() == 'X' or row[selection].upper() == 'O':
         print("This position has been taken")
-        playerMove(player)
+        return False
+
 
     row[selection] = player
     return row
 
 
+def playTTT():
+    print("Welcome to Command Line Tic Tac Toe")
+    player1Turn = True
+    winner = False
+    row0 = ["","",""]
+    row1 = ["","",""]
+    row2 = ["","",""]
+
+    selection = playerSelection()
+    player1 = selection[0]
+    player2 = selection[1]
 
 
-# order = playerSelection()
+    while winner == False:
 
-# createBoard(row1,row2,row3)
-# playerMove("X")
+        createBoard(row0, row1, row2)
 
-row1 = boardSelection(row1, 2, "x")
+        if player1Turn == True:
+           playerChoices = playerMove(player1)
+           rowNumber = playerChoices[0]
+           positionNumber = playerChoices[1]
 
-print(row1)
+
+           if rowNumber == '0':
+               row0 = boardSelection(row0, positionNumber, player1)
+               if row0 == False:
+                   player1Turn == True
+               else:
+                   player1Turn == False
+
+           elif rowNumber == '1':
+               row1 = boardSelection(row1, positionNumber, player1)
+               if row1 == False:
+                   player1Turn == True
+               else:
+                   player1Turn == False
+                   
+           elif rowNumber == '2':
+               row2 = boardSelection(row2, positionNumber, player1)
+               if row2 == False:
+                   player1Turn == True
+               else:
+                   player1Turn == False    
+        else: 
+            playerChoices = playerMove(player2)
+            rowNumber = playerChoices[0]
+            positionNumber = playerChoices[1]
+
+        if rowNumber == '0':
+               row0 = boardSelection(row0, positionNumber, player2)
+               if row0 == False:
+                   player1Turn == True
+               else:
+                   player1Turn == False
+
+        elif rowNumber == '1':
+               row1 = boardSelection(row1, positionNumber, player2)
+               if row1 == False:
+                   player1Turn == True
+               else:
+                   player1Turn == False
+                   
+        elif rowNumber == '2':
+               row2 = boardSelection(row2, positionNumber, player2)
+               if row2 == False:
+                   player1Turn == True
+               else:
+                   player1Turn == False
+
+            
+
+    
+    
+
+
+playTTT()
