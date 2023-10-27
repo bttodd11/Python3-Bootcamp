@@ -63,14 +63,34 @@ def boardSelection(row, selection, player):
     row[selection] = player
     return row
 
+# To win you would need 000, 111 , 222, 012 - with 
+# sorted from least to greatest
+def checkBoard(row0, row1, row2):
+
+    
+    for (index, row) in enumerate(row0):
+        if row0[index] == 'X' or row0[index] == 'O':
+            print(index + 1)
+        elif row1[index] == 'X' or row1[index] == 'O':
+            print(index + 4)
+        elif row2[index] == 'X' or row2[index] == 'O':
+            print(index + 7)
+            
+        
+        
+        # for secondIndex, position in rows[index]:
+        #     print(secondIndex)
+        #     break
+        
+    
 
 def playTTT():
     print("Welcome to Command Line Tic Tac Toe")
     player1Turn = True
     winner = False
-    row0 = ["","",""]
-    row1 = ["","",""]
-    row2 = ["","",""]
+    row0 = [" "," "," "]
+    row1 = [" "," "," "]
+    row2 = [" "," "," "]
 
     selection = playerSelection()
     player1 = selection[0]
@@ -80,6 +100,7 @@ def playTTT():
     while winner == False:
 
         createBoard(row0, row1, row2)
+        checkBoard(row0, row1, row2)
 
         if player1Turn == True:
            playerChoices = playerMove(player1)
