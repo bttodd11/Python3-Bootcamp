@@ -65,22 +65,61 @@ def boardSelection(row, selection, player):
 
 # To win you would need 000, 111 , 222, 012 - with 
 # sorted from least to greatest
-def checkBoard(row0, row1, row2):
-
+def checkBoard(row0, row1, row2, player):
+    
+    xArray = []
+    yArray = []
+    checkArray = [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7]]
     
     for (index, row) in enumerate(row0):
-        if row0[index] == 'X' or row0[index] == 'O':
-            print(index + 1)
-        elif row1[index] == 'X' or row1[index] == 'O':
-            print(index + 4)
-        elif row2[index] == 'X' or row2[index] == 'O':
-            print(index + 7)
+    
+        if player == 'X':
             
-        
-        
-        # for secondIndex, position in rows[index]:
-        #     print(secondIndex)
-        #     break
+            if row0[index] == 'X':
+              value = index + 1
+              xArray.append(value)
+              xArray.sort()
+
+            if row1[index] == 'X':
+             value = index + 4
+             xArray.append(value)
+             xArray.sort()
+
+            if row2[index] == 'X':
+             value = index + 7
+             xArray.append(value)
+             xArray.sort()
+             
+        else: 
+            
+            if row0[index] == 'O':
+             value = index + 1
+             yArray.append(value)
+             yArray.sort()
+             
+            if row1[index] == 'O':
+             value = index + 4
+             yArray.append(value)
+             yArray.sort()
+
+            if row2[index] == 'O':
+             value = index + 7
+             yArray.append(value)
+             yArray.sort()
+                
+    
+    for checkArr in checkArray:
+        if all(x in xArray for x in checkArr):
+            print("X's won !")
+            return True
+
+        if all(y in yArray for y in checkArr):
+            print("Y's won !")
+            return True
+
+    return False
+    
+   
         
     
 
@@ -100,7 +139,6 @@ def playTTT():
     while winner == False:
 
         createBoard(row0, row1, row2)
-        checkBoard(row0, row1, row2)
 
         if player1Turn == True:
            playerChoices = playerMove(player1)
@@ -109,31 +147,35 @@ def playTTT():
 
 
            if rowNumber == '0':
-             select = boardSelection(row0, positionNumber, player1)
+                select = boardSelection(row0, positionNumber, player1)
 
-             if select is not False:
-                row0 = select
-                player1Turn = False
-             else:
-                player1Turn = True
+                if select is not False:
+                 row0 = select
+                 winner = checkBoard(row0, row1, row2, 'X')
+                 player1Turn = False
+                else:
+                 player1Turn = True
 
            elif rowNumber == '1':
                 select = boardSelection(row1, positionNumber, player1)
 
                 if select is not False:
-                    row1 = select
-                    player1Turn = False
+                 row1 = select
+                 winner = checkBoard(row0, row1, row2, 'X')
+                 player1Turn = False
                 else:
-                    player1Turn = True
+                 player1Turn = True
                    
            elif rowNumber == '2':
                 select = boardSelection(row2, positionNumber, player1)
 
                 if select is not False:
-                    row1 = select
-                    player1Turn = False
+                 row2= select
+                 winner = checkBoard(row0, row1, row2, 'X')
+                 player1Turn = False
                 else:
-                    player1Turn = True
+                 player1Turn = True
+            
         
         else: 
             playerChoices = playerMove(player2)
@@ -145,6 +187,7 @@ def playTTT():
 
              if select is not False:
                 row0 = select
+                winner = checkBoard(row0, row1, row2, 'O')
                 player1Turn = True
              else:
                 player1Turn = False
@@ -154,6 +197,7 @@ def playTTT():
 
              if select is not False:
                 row1 = select
+                winner = checkBoard(row0, row1, row2, 'O')
                 player1Turn = True
              else:
                 player1Turn = False
@@ -163,9 +207,12 @@ def playTTT():
 
              if select is not False:
                 row2 = select
+                winner = checkBoard(row0, row1, row2, 'O')
                 player1Turn = True
              else:
                 player1Turn = False
+                
+            
 
             
 
