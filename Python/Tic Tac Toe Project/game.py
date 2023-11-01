@@ -55,10 +55,6 @@ def playerMove(player):
     return [row,int(position)]
 
 def boardSelection(row, selection, player):
-    while row[selection].upper() == 'X' or row[selection].upper() == 'O':
-        print("This position has been taken")
-        return False
-
 
     row[selection] = player
     return row
@@ -111,10 +107,18 @@ def checkBoard(row0, row1, row2, player):
     for checkArr in checkArray:
         if all(x in xArray for x in checkArr):
             print("X's won !")
+            createBoard(row0, row1, row2)
             return True
 
         if all(y in yArray for y in checkArr):
-            print("Y's won !")
+            print("O's won !")
+            createBoard(row0, row1, row2)
+            return True
+        
+    
+    if len(xArray) == 5 or len(yArray) == 5:
+            createBoard(row0, row1, row2)
+            print("Game is a draw")
             return True
 
     return False
@@ -144,73 +148,107 @@ def playTTT():
            playerChoices = playerMove(player1)
            rowNumber = playerChoices[0]
            positionNumber = playerChoices[1]
-
+           
 
            if rowNumber == '0':
+                if row0[positionNumber].upper() == 'X' or row0[positionNumber].upper() == 'O':
+                    player1Turn = True
+                    print("This position has been taken")
+                    continue
+
                 select = boardSelection(row0, positionNumber, player1)
 
                 if select is not False:
                  row0 = select
-                 winner = checkBoard(row0, row1, row2, 'X')
+                 winner = checkBoard(row0, row1, row2, player1)
                  player1Turn = False
                 else:
                  player1Turn = True
 
            elif rowNumber == '1':
+                if row1[positionNumber].upper() == 'X' or row1[positionNumber].upper() == 'O':
+                    player1Turn = True
+                    print("This position has been taken")
+                    continue 
+                  
                 select = boardSelection(row1, positionNumber, player1)
 
                 if select is not False:
                  row1 = select
-                 winner = checkBoard(row0, row1, row2, 'X')
+                 winner = checkBoard(row0, row1, row2, player1)
                  player1Turn = False
                 else:
                  player1Turn = True
                    
            elif rowNumber == '2':
+                if row2[positionNumber].upper() == 'X' or row2[positionNumber].upper() == 'O':
+                    player1Turn = True
+                    print("This position has been taken")
+                    continue
+                
                 select = boardSelection(row2, positionNumber, player1)
 
                 if select is not False:
-                 row2= select
-                 winner = checkBoard(row0, row1, row2, 'X')
+                 row2 = select
+                 winner = checkBoard(row0, row1, row2, player1)
                  player1Turn = False
                 else:
                  player1Turn = True
+
             
-        
-        else: 
+            
+                
+                    
+        elif player1Turn == False: 
             playerChoices = playerMove(player2)
             rowNumber = playerChoices[0]
             positionNumber = playerChoices[1]
-
+            
+          
             if rowNumber == '0':
-             select = boardSelection(row0, positionNumber, player2)
+                if row0[positionNumber].upper() == 'X' or row0[positionNumber].upper() == 'O':
+                    player1Turn = False
+                    print("This position has been taken")
+                    continue
+                
+                select = boardSelection(row0, positionNumber, player2)
 
-             if select is not False:
-                row0 = select
-                winner = checkBoard(row0, row1, row2, 'O')
-                player1Turn = True
-             else:
-                player1Turn = False
+                if select is not False:
+                 row0 = select
+                 winner = checkBoard(row0, row1, row2, player2)
+                 player1Turn = True
+                else:
+                 player1Turn = False
 
             elif rowNumber == '1':
-             select = boardSelection(row1, positionNumber, player2)
+                 if row1[positionNumber].upper() == 'X' or row1[positionNumber].upper() == 'O':
+                    player1 = False
+                    print("This position has been taken")
+                    continue
+                
+                 select = boardSelection(row1, positionNumber, player2)
 
-             if select is not False:
-                row1 = select
-                winner = checkBoard(row0, row1, row2, 'O')
-                player1Turn = True
-             else:
-                player1Turn = False
+                 if select is not False:
+                  row1 = select
+                  winner = checkBoard(row0, row1, row2, player2)
+                  player1Turn = True
+                 else:
+                  player1Turn = False
                    
             elif rowNumber == '2':
-             select = boardSelection(row2, positionNumber, player2)
+                if row2[positionNumber].upper() or row2[positionNumber].upper() == '0':
+                    player1 = False
+                    print("This position has been taken")
+                    continue
+                
+                select = boardSelection(row2, positionNumber, player2)
 
-             if select is not False:
-                row2 = select
-                winner = checkBoard(row0, row1, row2, 'O')
-                player1Turn = True
-             else:
-                player1Turn = False
+                if select is not False:
+                 row2 = select
+                 winner = checkBoard(row0, row1, row2, player2)
+                 player1Turn = True
+                else:
+                 player1Turn = False
                 
             
 
