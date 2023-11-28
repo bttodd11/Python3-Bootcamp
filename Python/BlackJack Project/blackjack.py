@@ -20,7 +20,7 @@ class Deck:
         for suit in suits:
             for rank in ranks:
                 created_card = Card(suit, rank)
-                self.all_card.append(created_card)
+                self.all_cards.append(created_card)
                 
     def shuffle(self):
         print("Shuffling ....")
@@ -50,6 +50,9 @@ class Player:
         self_account -= amount
         print("Your current balance is {}".format(self_account))
         
+    def __str__(self):
+        return self.name
+        
 class Dealer:
     def __init__(self, name = "Dealer"):
         self.name = name
@@ -67,7 +70,7 @@ class Dealer:
 
 def start_game():
 # Start of the game #
-    name = print(input("Please enter your name"))
+    name = input("Please enter your name: ")
     player = Player(name)
     dealer = Dealer()
     deck = Deck()
@@ -76,19 +79,27 @@ def start_game():
     
     print("Welcome to Command Line Blackjack {}, there is a 5 minimum wager to start".format(player.name))
     
-    while wager_amount < 5 and wager_amount.isDigit():
-        wager_amount = int(input("How much would you like to bet ?"))
-        
+    while (int(wager_amount) < 5) and (isinstance(wager_amount, int)):
+
+        try:
+            wager_amount = int(input("How much would you like to bet ?"))
+            deck.shuffle()
+        except:
+            print("Please enter an amount higher then 5 ")
     
     dealer_cards = []
     player_cards = []
-    
+
     # Starting the game with 2 cards each
     for _ in range(2):
         dealer_cards.append(deck.deal_one())
         player_cards.append(deck.deal_one())
         
+    while hit == ["Yes", "yes"]:
+        hit = input()
+        for value in player_cards:
+            print(" and {}".format(player_cards[value]))        
 
 
     
-    
+start_game()
