@@ -80,7 +80,7 @@ def start_game():
     print("Welcome to Command Line Blackjack {}, there is a 5 minimum wager to start".format(player.name))
     
     while stillPlaying == True:
-        if player.account > -100:
+        if player.account < -100:
             print("You own too much money {}.".format(player.name))
             return
             
@@ -112,23 +112,32 @@ def start_game():
             player_cards.append(deck.deal_one())
             playerTotal += player_cards[-1].value
             if playerTotal > 21:
-                print("{} has bust".format(player.name))
+                print("{} has bust, your total was {}".format(player.name, playerTotal))
+                print("Dealers total was {} ".format(dealerTotal))
                 player.subtract_from_account(wager_amount)
                 wager_amount = 0
                 hit = ""
+                stillPlaying = False
+                answer = input("Would you like to play again ? ")
+                
+                if answer is ["Yes", "yes"]:
+                    stillPlaying = True
+                else: 
+                    return
+                
             else:
                 hit = input("Total is now {} hit ?".format(playerTotal))
                 
-        dealerTotal += dealer_cards[1].value
-        print("Dealers total is {} ".format(dealerTotal))
+            dealerTotal += dealer_cards[1].value
+            print("Dealers total is {} ".format(dealerTotal))
         
-        while dealerTotal <= 21:
+            while dealerTotal <= 21:
 
-            if dealerTotal > playerTotal:
-                print("{} total is {}, the dealer wins ")
-            else:
-                dealer_cards.append(deck.deal_one())
-                dealerTotal += dealer_cards[-1].value
+                if dealerTotal > playerTotal:
+                    print("{} total is {}, the dealer wins ")
+                else:
+                    dealer_cards.append(deck.deal_one())
+                    dealerTotal += dealer_cards[-1].value
                 
 
 
