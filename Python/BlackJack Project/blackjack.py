@@ -43,12 +43,12 @@ class Player:
             return True
         
     def add_to_account(self, amount):
-        self_account += amount
-        print("Your current balance is {}".format(self_account))
+        self.account += amount
+        print("Your current balance is {}".format(self.account))
     
     def subtract_from_account(self, amount):
-        self_account -= amount
-        print("Your current balance is {}".format(self_account))
+        self.account -= amount
+        print("Your current balance is {}".format(self.account))
         
     def __str__(self):
         return self.name
@@ -75,30 +75,61 @@ def start_game():
     dealer = Dealer()
     deck = Deck()
     wager_amount = 0
-    
+    stillPlaying = True
     
     print("Welcome to Command Line Blackjack {}, there is a 5 minimum wager to start".format(player.name))
     
-    while (int(wager_amount) < 5) and (isinstance(wager_amount, int)):
+    while stillPlaying == True:
+        if player.account > -100:
+            print("You own too much money {}.".format(player.name))
+            return
+            
+        while (int(wager_amount) < 5) and (isinstance(wager_amount, int)):
 
-        try:
-            wager_amount = int(input("How much would you like to bet ?"))
-            deck.shuffle()
-        except:
-            print("Please enter an amount higher then 5 ")
+            try:
+                wager_amount = int(input("How much would you like to bet ? "))
+                deck.shuffle()
+            except:
+                print("Please enter an numeric amount higher then 5 ")
+
     
-    dealer_cards = []
-    player_cards = []
+        dealer_cards = []
+        player_cards = []
 
     # Starting the game with 2 cards each
-    for _ in range(2):
-        dealer_cards.append(deck.deal_one())
-        player_cards.append(deck.deal_one())
+        for _ in range(2):
+            dealer_cards.append(deck.deal_one())
+            player_cards.append(deck.deal_one())
+    
+        playerTotal = player_cards[0].value + player_cards[1].value
+        dealerTotal = dealer_cards[0].value
         
-    while hit == ["Yes", "yes"]:
-        hit = input()
-        for value in player_cards:
-            print(" and {}".format(player_cards[value]))        
+        print("Dealers first card is a {} for a total of {} ".format(dealer_cards[0], dealerTotal))
+        hit = input("{} cards are {} and {} for a total of {} do you want to hit ? ".format(player.name, player_cards[0], player_cards[1], playerTotal))
+        while hit in ["Yes", "yes"]:
+
+        
+            player_cards.append(deck.deal_one())
+            playerTotal += player_cards[-1].value
+            if playerTotal > 21:
+                print("{} has bust".format(player.name))
+                player.subtract_from_account(wager_amount)
+                wager_amount = 0
+                hit = ""
+            else:
+                hit = input("Total is now {} hit ?".format(playerTotal))
+                
+        dealerTotal += dealer_cards[1].value
+        print("Dealers total is {} ".format(dealerTotal))
+        
+        while dealerTotal <= 21:
+
+            if dealerTotal > playerTotal:
+                print("{} total is {}, the dealer wins ")
+            else:
+                dealer_cards.append(deck.deal_one())
+                dealerTotal += dealer_cards[-1].value
+                
 
 
     
