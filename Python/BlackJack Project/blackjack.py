@@ -76,6 +76,7 @@ def start_game():
     deck = Deck()
     wager_amount = 0
     stillPlaying = True
+    hit = ""
     
     print("Welcome to Command Line Blackjack {}, there is a 5 minimum wager to start".format(player.name))
     
@@ -105,28 +106,34 @@ def start_game():
         dealerTotal = dealer_cards[0].value
         
         print("Dealers first card is a {} for a total of {} ".format(dealer_cards[0], dealerTotal))
-        hit = input("{} cards are {} and {} for a total of {} do you want to hit ? ".format(player.name, player_cards[0], player_cards[1], playerTotal))
-        while hit in ["Yes", "yes"]:
-
-        
-            player_cards.append(deck.deal_one())
-            playerTotal += player_cards[-1].value
-            if playerTotal > 21:
-                print("{} has bust, your total was {}".format(player.name, playerTotal))
-                print("Dealers total was {} ".format(dealerTotal))
-                player.subtract_from_account(wager_amount)
-                wager_amount = 0
-                hit = ""
-                stillPlaying = False
-                answer = input("Would you like to play again ? ")
-                
-                if answer is ["Yes", "yes"]:
-                    stillPlaying = True
-                else: 
-                    return
-                
+        while hit not in ["Yes", "yes", "y", "Y"]:
+            try:
+                hit = input("{} cards are {} and {} for a total of {} do you want to hit ? ".format(player.name, player_cards[0], player_cards[1], playerTotal))
+            except:    
+                print("Invalid Response")
+                continue
             else:
-                hit = input("Total is now {} hit ?".format(playerTotal))
+                if hit in ["No", "n", "no"]:
+                    return
+    
+            
+        player_cards.append(deck.deal_one())
+        playerTotal += player_cards[-1].value
+        if playerTotal > 21:
+            print("{} has bust, your total was {}".format(player.name, playerTotal))
+            print("Dealers total was {} ".format(dealerTotal))
+            player.subtract_from_account(wager_amount)
+            wager_amount = 0
+            stillPlaying = False
+            answer = input("Would you like to play again ? ")
+                
+            if answer is ["Yes", "yes"]:
+                stillPlaying = True
+            else: 
+                return
+                
+        else:
+            hit = input("Total is now {} hit ?".format(playerTotal))
                 
             dealerTotal += dealer_cards[1].value
             print("Dealers total is {} ".format(dealerTotal))
@@ -138,6 +145,7 @@ def start_game():
                 else:
                     dealer_cards.append(deck.deal_one())
                     dealerTotal += dealer_cards[-1].value
+
                 
 
 
