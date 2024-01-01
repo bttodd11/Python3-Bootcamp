@@ -80,7 +80,10 @@ def reset_user(type):
         if isinstance(type, str) == True:
             return ""
         else:
-             return 0, 0
+             return 0, 0, 0
+    
+# def show_stats():
+    
     
 
 def start_game():
@@ -156,7 +159,8 @@ def start_game():
                     break
                     
             stillPlaying = False
-            playerTotal, dealerTotal = reset_user(playerTotal)
+            player.subtract_from_account(wager_amount)
+            playerTotal, dealerTotal, wager_amount = reset_user(playerTotal)
             stillPlaying = are_you_still_playing(stillPlaying)
             hit = reset_user(hit)
                         
@@ -170,10 +174,6 @@ def start_game():
             if playerTotal > 21:
                 print("{} has bust, your total was {}, the dealers total was {} ".format(player.name, playerTotal, dealerTotal))
                 player.subtract_from_account(wager_amount)
-                break
-                playerTotal, dealerTotal = reset_user(playerTotal)
-                hit = reset_user(hit)
-                stillPlaying = are_you_still_playing(stillPlaying)
                 
             else:
                 print("Next card is a {} of {} for a total of {}".format(player_cards[-1].rank, player_cards[-1].suit, playerTotal))
@@ -187,32 +187,41 @@ def start_game():
                      
                      if playerTotal > 21:
                         print("{} has bust, your total was {}, the dealers total was {} ".format(player.name, playerTotal, dealerTotal))
+                        player.subtract_from_account(wager_amount)
                         break
-                        stillPlaying = False
-                        playerTotal, dealerTotal = reset_user(playerTotal)
-                        hit = reset_user(hit)
-                        stillPlaying = are_you_still_playing(stillPlaying)
                         
                      hit = input("Total is now {} hit ? ".format(playerTotal))
+                    
                 
                 while dealerTotal <= 21:
-                
+                    
                     if dealerTotal == 21:
                         print("Dealer has 21, dealer wins".format(player.name, playerTotal, dealerTotal))
+                        player.subtract_from_account(wager_amount)
                         break
-                    elif dealerTotal and playerTotal == 21:
+                    elif dealerTotal > 21:
+                        print("Dealer has bust, dealers total is {}".format(dealerTotal))
+                        player.add_to_account(wager_amount)
+                        break
+                    elif dealerTotal == 21 and playerTotal == 21:
                         print("Both dealer and {} has 21, this game is void. ".format(player.name))
                         break
                     elif dealerTotal > playerTotal:
                          print("{}'s total is {}, the dealers total is {} the dealer wins".format(player.name, playerTotal, dealerTotal))
+                         player.subtract_from_account(wager_amount)
                          break    
                     else:
                         dealer_cards.append(deck.deal_one())
                         dealerTotal += dealer_cards[-1].value
+                        
+                        if dealerTotal > 21:
+                            print("Dealer has bust, dealers total is {}".format(dealerTotal))
+                            player.add_to_account(wager_amount)
+                            
             
             # Once we break out of the while loop ask if we are going to play
             stillPlaying = False
-            playerTotal, dealerTotal = reset_user(playerTotal)
+            playerTotal, dealerTotal, wager_amount = reset_user(playerTotal)
             hit = reset_user(hit)
             stillPlaying = are_you_still_playing(stillPlaying)
             
